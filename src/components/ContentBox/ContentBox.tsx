@@ -54,6 +54,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
   const [isInView, setIsInView] = useState(false);
+  const [windowWidth, setWindowWidth] = useState<number | undefined>(undefined);
 
   const boxRef = useRef<HTMLDivElement | null>(null);
   const refPrevBtn = useRef<HTMLButtonElement | null>(null);
@@ -61,17 +62,41 @@ const ContentBox: React.FC<ContentBoxProps> = ({
 
   const hiddenMask = `repeating-linear-gradient(to right, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 30px, rgba(0,0,0,1) 30px, rgba(0,0,0,1) 30px)`;
   const visibleMask = `repeating-linear-gradient(to right, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 0px, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 30px)`;
+
+  const calculateCustomOffset = () => {
+    const width = window.innerWidth;
+    if (width < 768) return 200;
+    if (width >= 768 && width < 1440) return 500;
+    return 800;
+  };
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const variants = {
-    hidden: (custom: string) =>
-      !noAnimation
+    hidden: (custom: string) => {
+      const customOffset = calculateCustomOffset();
+      return !noAnimation
         ? {
             opacity: 0,
-            x: custom ? 1000 : -1000,
+            x: custom ? customOffset : -customOffset,
           }
         : {
             opacity: 1,
             x: 0,
-          },
+          };
+    },
     visible: { opacity: 1, x: 0, transition: { duration: 0.9, easeInOut } },
   };
 
@@ -97,7 +122,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
     <motion.div
       css={box(contentGap, changeDirection, type)}
       ref={boxRef}
-      initial="hidden"
+      initial={windowWidth && windowWidth < 768 ? "visible" : "hidden"}
       whileInView="visible"
       viewport={{ amount: 0.1, once: true }}
       variants={variants}
@@ -160,7 +185,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         }
         transition={{ duration: 1, delay: 1 }}
         onViewportEnter={() => setIsInView(true)}
-        viewport={{ amount: 0.3 }}
+        viewport={{ amount: 0.1 }}
       />
     </motion.div>
   );
