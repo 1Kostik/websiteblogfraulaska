@@ -20,6 +20,7 @@ const MyWaySection = () => {
         type="myWay"
         changeDirection={true}
         isHideMobileImg={true}
+        noAnimation
       >
         Мій шлях
       </ContentBox>

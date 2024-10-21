@@ -5,8 +5,8 @@ import RingLoader from "react-spinners/RingLoader";
 import SharedLayout from "./components/SharedLayout/SharedLayout";
 import ClearLocalStorageOnNavigate from "./components/ClearLocalStorageOnNavigate";
 import Overlay from "@components/Overlay";
-import { useAppSelector } from "@redux/hooks";
-import { selectIsAuthenticated } from "@redux/auth/selectors";
+// import { useAppSelector } from "@redux/hooks";
+// import { selectIsAuthenticated } from "@redux/auth/selectors";
 
 const MainPage = lazy(() => import("@pages/MainPage/MainPage"));
 const HealthyPage = lazy(() => import("@pages/HealthyPage/HealthyPage"));
@@ -18,21 +18,25 @@ const CertificatesPage = lazy(
 const ProductDetails = lazy(
   () => import("@pages/ProductDetails/ProductDetails")
 );
-const CartPage = lazy(() => import("@pages/CartPage/CartPage"));
-const OrderPage = lazy(() => import("@pages/OrderPage/OrderPage"));
-const CreateAdvertPage = lazy(
-  () => import("@pages/CreateAdvertPage/CreateAdvertPage")
+const PaymentAndDelivery = lazy(
+  () => import("@pages/PaymentAndDelivery/PaymentAndDelivery")
 );
-const EditAdvertPage = lazy(
-  () => import("@pages/EditAdvertPage/EditAdvertPage")
-);
-const LoginPage = lazy(() => import("@pages/LoginPage/LoginPage"));
-const OrderedPage = lazy(() => import("@pages/OrderedPage/OrderedPage"));
-const OrdersPage = lazy(() => import("@pages/OrdersPage/OrdersPage"));
-const OrderItemPage = lazy(() => import("@pages/OrderItemPage/OrderItemPage"));
+const PrivacyPolicy = lazy(() => import("@pages/PrivacyPolicy/PrivacyPolicy"));
+// const CartPage = lazy(() => import("@pages/CartPage/CartPage"));
+// const OrderPage = lazy(() => import("@pages/OrderPage/OrderPage"));
+// const CreateAdvertPage = lazy(
+//   () => import("@pages/CreateAdvertPage/CreateAdvertPage")
+// );
+// const EditAdvertPage = lazy(
+//   () => import("@pages/EditAdvertPage/EditAdvertPage")
+// );
+// const LoginPage = lazy(() => import("@pages/LoginPage/LoginPage"));
+// const OrderedPage = lazy(() => import("@pages/OrderedPage/OrderedPage"));
+// const OrdersPage = lazy(() => import("@pages/OrdersPage/OrdersPage"));
+// const OrderItemPage = lazy(() => import("@pages/OrderItemPage/OrderItemPage"));
 
 function App() {
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  // const isAuthenticated = useAppSelector(selectIsAuthenticated);
   return (
     <Suspense
       fallback={
@@ -53,10 +57,12 @@ function App() {
           <Route path="aroma-school" element={<AromaSchool />} />
           <Route path="store" element={<StorePage />} />
           <Route path="store/product/:id" element={<ProductDetails />} />
-          <Route path="cart" element={<CartPage />} />
-          <Route path="order" element={<OrderPage />} />
-          <Route path="ordered" element={<OrderedPage />} />
-          {isAuthenticated ? (
+          <Route path="payment-delivery" element={<PaymentAndDelivery />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          {/* <Route path="cart" element={<CartPage />} /> */}
+          {/* <Route path="order" element={<OrderPage />} /> */}
+          {/* <Route path="ordered" element={<OrderedPage />} /> */}
+          {/* {isAuthenticated ? (
             <>
               <Route
                 path="admin/create-advert"
@@ -74,10 +80,10 @@ function App() {
               path="/admin/*"
               element={<Navigate to="/admin/login" replace />}
             />
-          )}
+          )} */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
-        <Route path="/admin/login" element={<LoginPage />} />
+        {/* <Route path="/admin/login" element={<LoginPage />} /> */}
       </Routes>
     </Suspense>
   );

@@ -4,7 +4,7 @@ import AboutSection from "./AboutSection/AboutSection";
 import ProjectsSection from "./ProjectsSection/ProjectsSection";
 import MyWaySection from "./MyWaySection/MyWaySection";
 
-import bgImage from "/src/assets/images/hero_photo.webp";
+import bgImage from "@assets/images/frau.webp";
 import CardSliderSection from "./CardSliderSection/CardSliderSection";
 import { imageArray } from "@constants/imagesArr";
 

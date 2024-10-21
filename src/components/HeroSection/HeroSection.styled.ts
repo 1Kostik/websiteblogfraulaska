@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import { motion } from "framer-motion";
+
 import { HeroSectionProps } from "./HeroSection";
 import { onDesktop, onTablet } from "@styles/mixins";
 
@@ -36,12 +38,13 @@ export const Section = styled.section<HeroSectionProps>`
         `)}
 `;
 
-export const Container = styled.div<HeroSectionProps>`
+export const Container = styled(motion.div)<HeroSectionProps>`
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   height: 100%;
+  overflow: hidden;
 
   ${({ viewType }) =>
     viewType === "main"

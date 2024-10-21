@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { easeInOut, motion } from "framer-motion";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
@@ -36,6 +37,8 @@ interface ContentBoxProps {
   isHideMobileImg?: boolean;
   changeDirection?: boolean;
   type?: string;
+  changeAnimationDirection?: boolean;
+  noAnimation?: boolean;
 }
 
 const ContentBox: React.FC<ContentBoxProps> = ({
@@ -45,13 +48,32 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   isHideMobileImg,
   changeDirection,
   type,
+  changeAnimationDirection,
+  noAnimation,
 }) => {
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
   const [boxHeight, setBoxHeight] = useState<number | undefined>(undefined);
+  const [isInView, setIsInView] = useState(false);
 
   const boxRef = useRef<HTMLDivElement | null>(null);
   const refPrevBtn = useRef<HTMLButtonElement | null>(null);
   const refNextBtn = useRef<HTMLButtonElement | null>(null);
+
+  const hiddenMask = `repeating-linear-gradient(to right, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 30px, rgba(0,0,0,1) 30px, rgba(0,0,0,1) 30px)`;
+  const visibleMask = `repeating-linear-gradient(to right, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 0px, rgba(0,0,0,1) 0px, rgba(0,0,0,1) 30px)`;
+  const variants = {
+    hidden: (custom: string) =>
+      !noAnimation
+        ? {
+            opacity: 0,
+            x: custom ? 1000 : -1000,
+          }
+        : {
+            opacity: 1,
+            x: 0,
+          },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.9, easeInOut } },
+  };
 
   useEffect(() => {
     setBoxHeight(boxRef.current?.offsetHeight);
@@ -72,7 +94,15 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   }, [swiper]);
 
   return (
-    <div css={box(contentGap, changeDirection, type)} ref={boxRef}>
+    <motion.div
+      css={box(contentGap, changeDirection, type)}
+      ref={boxRef}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ amount: 0.1, once: true }}
+      variants={variants}
+      custom={changeAnimationDirection}
+    >
       {(type === "projects" || type === "info") && (
         <div css={textContainer(type)}>
           {typeof children === "string" && <p>{children}</p>}
@@ -120,8 +150,19 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           </div>
         </div>
       )}
-      <div css={imgThumb(isHideMobileImg, type, photo, boxHeight)} />
-    </div>
+      <motion.div
+        css={imgThumb(isHideMobileImg, type, photo, boxHeight)}
+        initial={false}
+        animate={
+          isInView
+            ? { WebkitMaskImage: visibleMask, maskImage: visibleMask }
+            : { WebkitMaskImage: hiddenMask, maskImage: hiddenMask }
+        }
+        transition={{ duration: 1, delay: 1 }}
+        onViewportEnter={() => setIsInView(true)}
+        viewport={{ amount: 0.3 }}
+      />
+    </motion.div>
   );
 };
 

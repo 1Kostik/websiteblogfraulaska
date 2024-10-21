@@ -26,7 +26,12 @@ const ProjectsSection = () => {
           </p>
           <a href="#">Перейти</a>
         </ContentBox>
-        <ContentBox photo={plugImg3} contentGap={12} type={"projects"}>
+        <ContentBox
+          photo={plugImg3}
+          contentGap={12}
+          type={"projects"}
+          changeAnimationDirection
+        >
           <h3>
             Добровольче обʼєднання патронатного супроводу військових «Sol»
           </h3>
