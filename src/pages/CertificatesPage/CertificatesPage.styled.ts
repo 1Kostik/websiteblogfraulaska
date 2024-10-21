@@ -41,11 +41,10 @@ export const title = css`
 `;
 export const itemStyles = css`
   width: 320px;
-  height: auto;
   cursor: pointer;
   transition: transform 0.3s ease;
   & img {
-    object-fit: fill;
+    object-fit: cover;
   }
   ${onTablet(css`
     width: 336px;

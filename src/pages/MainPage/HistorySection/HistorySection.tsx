@@ -29,6 +29,7 @@ const HistorySection = () => {
           isHideMobileImg={true}
           changeDirection={true}
           type={"info"}
+          changeAnimationDirection
         >
           За цей період яктивно вивчала психологію (в більшості роботу з
           метафоричними картами в період кризи, втрат, військових дій).
